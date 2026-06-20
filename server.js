@@ -1,19 +1,35 @@
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
 const app = express();
-app.use(cors());
+const allowedOrigins = process.env.FRONTEND_URL
+  ? process.env.FRONTEND_URL.split(",").map((origin) => origin.trim())
+  : true;
+
+app.use(cors({ origin: allowedOrigins }));
 app.use(express.json());
 
 // MongoDB connect
-mongoose.connect("mongodb://himanshumishra1699_db_user:hitman123@ac-6nhs4no-shard-00-00.m6rtcb1.mongodb.net:27017,ac-6nhs4no-shard-00-01.m6rtcb1.mongodb.net:27017,ac-6nhs4no-shard-00-02.m6rtcb1.mongodb.net:27017/crm?ssl=true&replicaSet=atlas-76tfro-shard-0&authSource=admin&retryWrites=true&w=majority")
-.then(()=>console.log("MongoDB Connected"))
-.catch(err=>console.log(err));
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB Connected"))
+  .catch(err => console.log(err));
 // Schema
 const LeadSchema = new mongoose.Schema({
   name: String,
-  status: String
+  email: String,
+  phone: String,
+  company: String,
+  dealValue: Number,
+  status: {
+    type: String,
+    default: "New"
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
 });
 
 const Lead = mongoose.model("Lead", LeadSchema);
@@ -53,7 +69,9 @@ app.delete("/leads/:id", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+const PORT = process.env.PORT || 5000;
 
-app.listen(5000, ()=>{
-  console.log("Server running on port 5000");
+
+app.listen(PORT, ()=>{
+  console.log(`Server running on port ${PORT}`);
 });
