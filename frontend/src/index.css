@@ -21,22 +21,144 @@ button:focus-visible, input:focus-visible, select:focus-visible {
   outline: 2px solid #7C3AED; outline-offset: 2px;
 }
 
-/* Prevent zoom on input focus on iOS */
+/* ── Prevent zoom on input focus iOS ── */
 @media (max-width: 767px) {
   input, select, textarea { font-size: 16px !important; }
 }
 
+/* ── Layout ── */
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Desktop sidebar visible, mobile hidden */
+.sidebar {
+  width: 210px;
+  min-width: 210px;
+  background: #080F1E;
+  border-right: 1px solid #111E33;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  flex-shrink: 0;
+}
+
+.mobile-header { display: none; }
+
+/* Stat cards: 4 col on desktop */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+/* Charts: 2 col on desktop */
+.chart-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+/* Lead table row */
+.lead-row {
+  display: grid;
+  grid-template-columns: 2fr 1.6fr 1.1fr 1.1fr 1fr 1fr auto;
+  padding: 14px 24px;
+  gap: 12px;
+  align-items: center;
+  border-top: 1px solid #0F1A2E;
+  transition: background 0.15s;
+}
+.lead-row:first-child { border-top: none; }
+.lead-row:hover { background: rgba(124,58,237,0.04); }
+
+.col-headers {
+  display: grid;
+  grid-template-columns: 2fr 1.6fr 1.1fr 1.1fr 1fr 1fr auto;
+  padding: 9px 24px;
+  gap: 12px;
+}
+
+/* ── MOBILE BREAKPOINT ── */
+@media (max-width: 767px) {
+  .sidebar        { display: none !important; }
+  .mobile-header  { display: flex !important; }
+  .desktop-only   { display: none !important; }
+
+  .stat-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .chart-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .col-headers  { display: none !important; }
+  .lead-row     { display: none !important; }
+  .mobile-cards { display: block !important; }
+}
+
+/* Lead cards (mobile only) */
+.mobile-cards { display: none; }
+
+/* ── Animations ── */
 @keyframes slideUp {
   from { transform: translateY(100%); opacity: 0; }
   to   { transform: translateY(0);    opacity: 1; }
 }
-
 @keyframes slideInRight {
   from { transform: translateX(100%); opacity: 0; }
   to   { transform: translateX(0);    opacity: 1; }
 }
-
 @keyframes fadeInScale {
   from { opacity: 0; transform: translate(-50%,-50%) scale(0.95); }
   to   { opacity: 1; transform: translate(-50%,-50%) scale(1); }
 }
+@keyframes slideUpModal {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+/* ── Nav button ── */
+.nav-btn {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: 10px;
+  border: none; border-left: 2px solid transparent;
+  background: transparent; color: #64748B;
+  cursor: pointer; width: 100%; text-align: left;
+  font-size: 13px; font-weight: 400;
+  margin-bottom: 2px; transition: all 0.2s;
+}
+.nav-btn.active {
+  border-left-color: #7C3AED;
+  background: rgba(124,58,237,0.16);
+  color: #A78BFA; font-weight: 600;
+}
+
+/* ── Buttons ── */
+.btn-advance {
+  padding: 5px 12px; border-radius: 7px;
+  border: 1px solid #1E2D45;
+  background: transparent; color: #A78BFA;
+  cursor: pointer; font-size: 11px; font-weight: 600;
+  white-space: nowrap; transition: all 0.15s;
+}
+.btn-advance:hover { background: rgba(167,139,250,0.12); border-color: #A78BFA44; }
+
+.btn-delete {
+  padding: 5px 9px; border-radius: 7px;
+  border: 1px solid #1E2D45;
+  background: transparent; color: #EF4444;
+  cursor: pointer; font-size: 13px;
+  transition: all 0.15s;
+}
+.btn-delete:hover { background: rgba(239,68,68,0.1); border-color: #EF444444; }
